@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.orthomcl.model.wsfplugin;
+package org.orthomcl.wsfplugin;
 
 import java.io.BufferedReader;
 import java.io.File;

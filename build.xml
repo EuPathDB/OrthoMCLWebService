@@ -4,32 +4,25 @@
   <!-- oooooooooooooooooooooooooo  Dependencies  oooooooooooooooooooooooooo -->
   <!-- oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo -->
 
-  <target name="WSF-Installation">
-    <ant antfile="../WSF/build.xml" target="WSF-Installation">
-      <property name="project" value="WSF"/>
-      <property name="version" value="WDK_version_1-18"/>
-    </ant>
-  </target>  
-
-  <target name="WSF-WebInstallation">
-    <ant antfile="../WSF/build.xml" target="WSF-WebInstallation">
-      <property name="project" value="WSF"/>
-      <property name="version" value="WDK_version_1-18"/>
-    </ant>
-  </target>  
-
-  <target name="WDK-Installation">
-    <ant antfile="../WDK/build.xml" target="WDK-Installation">
-      <property name="project" value="WDK"/>
+  <target name="EuPathWebSvcCommon-Installation">
+    <ant antfile="../EuPathWebSvcCommon/build.xml" target="EuPathWebSvcCommon-Installation">
+      <property name="project" value="EuPathWebSvcCommon"/>
       <property name="version" value="WDK_version_1-18"/>
     </ant>
   </target>  
     
-  <target name="WSF-Checkout" unless="WSF.present"> 
+ <target name="EuPathWebSvcCommon-WebInstallation">
+    <ant antfile="../EuPathWebSvcCommon/build.xml" target="EuPathWebSvcCommon-WebInstallation">
+      <property name="project" value="EuPathWebSvcCommon"/>
+      <property name="version" value="WDK_version_1-18"/>
+    </ant>
+  </target>  
+
+  <target name="EuPathWebSvcCommon-Checkout" unless="EuPathWebSvcCommon.present">
     <ant target="defaultProjectCheckout" inheritAll="false">
-      <property name="svnurl" value="https://www.cbil.upenn.edu/svn/gus/WSF"/>
-      <property name="project" value="WSF"/>
-      <property name="version" value="WDK_version_1-28"/>
+      <property name="svnurl" value="https://www.cbil.upenn.edu/svn/apidb/EuPathWebSvcCommon"/>
+      <property name="project" value="EuPathWebSvcCommon"/>
+      <property name="version" value="api-build-17"/>
     </ant>
   </target>
 
@@ -37,8 +30,9 @@
   <!-- oooooooooooooooooooooooooo    Checkout    oooooooooooooooooooooooooo -->
   <!-- oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo -->
   <target name="OrthoMCLWebService-ChildCheckout">
-    <available file="../WSF" type="dir"  property="WSF.present" />
-    <antcall target="WSF-Checkout"/>
+    <available file="../EuPathWebSvcCommon" type="dir"  property="EuPathWebSvcCommon.present" />
+    <antcall target="EuPathWebSvcCommon-Checkout"/>
+
   </target>
   
   <!-- oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo -->
@@ -46,7 +40,7 @@
   <!-- oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo -->
   <target name="OrthoMCLWebService-ChildUpdate">
     <ant target="defaultProjectUpdate">
-      <property name="project" value="WSF"/>
+      <property name="project" value="EuPathWebSvcCommon"/>
     </ant>
   </target>
 
@@ -54,8 +48,7 @@
   <!-- oooooooooooooooooooooooooo  Installation  oooooooooooooooooooooooooo -->
   <!-- oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo -->
 
-  <target name="OrthoMCLWebService-Installation" depends="WSF-Installation,
-                                                           WDK-Installation,
+  <target name="OrthoMCLWebService-Installation" depends="EuPathWebSvcCommon-Installation,
                                                            OrthoMCLWebService/WSFPlugin-Installation">
 
     <ant target="defaultProjectInstall"/>
@@ -82,7 +75,7 @@
   <!-- oooooooooooooooooooooooo  Web Installation  oooooooooooooooooooooooo -->
   <!-- oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo -->
 
-  <target name="OrthoMCLWebService-WebInstallation" depends="WSF-WebInstallation,
+  <target name="OrthoMCLWebService-WebInstallation" depends="EuPathWebSvcCommon-WebInstallation,
                                                               OrthoMCLWebService-Installation">
 
   </target>
