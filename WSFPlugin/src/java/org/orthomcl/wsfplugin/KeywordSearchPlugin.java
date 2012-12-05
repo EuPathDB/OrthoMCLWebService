@@ -5,25 +5,29 @@ package org.orthomcl.wsfplugin;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.sql.DataSource;
-
+import org.eupathdb.websvccommon.wsfplugin.EuPathServiceException;
+import org.eupathdb.websvccommon.wsfplugin.textsearch.AbstractOracleTextSearchPlugin;
+import org.eupathdb.websvccommon.wsfplugin.textsearch.SearchResult;
+import org.gusdb.wdk.model.WdkModel;
+import org.gusdb.wdk.model.WdkModelException;
 import org.gusdb.wdk.model.dbms.SqlUtils;
 import org.gusdb.wsf.plugin.WsfRequest;
 import org.gusdb.wsf.plugin.WsfResponse;
 import org.gusdb.wsf.plugin.WsfServiceException;
-import org.eupathdb.websvccommon.wsfplugin.textsearch.AbstractOracleTextSearchPlugin;
-import org.eupathdb.websvccommon.wsfplugin.textsearch.SearchResult;
 
 /**
  * @author Steve and John I
  * @created Nov 2012
  */
 public class KeywordSearchPlugin extends AbstractOracleTextSearchPlugin {
+  
+  private static final String CTX_CONTAINER_APP = "wdkModel";
+  
+  private static final String CONNECTION_APP = WdkModel.CONNECTION_APP;
 
     /*
      * (non-Javadoc)
@@ -60,7 +64,7 @@ public class KeywordSearchPlugin extends AbstractOracleTextSearchPlugin {
 	    ps = getQuery(recordType, detailTable, primaryKeyColumn, projectId,
 			  oracleTextExpression, quotedFields.toString());
 	    matches = textSearch(ps, primaryKeyColumn);
-	} catch (SQLException ex) {
+	} catch (SQLException | WdkModelException | EuPathServiceException ex) {
 	    throw new WsfServiceException(ex);
 	} finally {
 	    SqlUtils.closeStatement(ps);
@@ -79,8 +83,8 @@ public class KeywordSearchPlugin extends AbstractOracleTextSearchPlugin {
 				       String primaryKeyColumn, String projectId,
 				       String oracleTextExpression, String fields)
 	throws WsfServiceException,
-            SQLException {
-        Connection dbConnection = getDbConnection();
+            SQLException, WdkModelException, EuPathServiceException {
+        Connection dbConnection = getDbConnection(CTX_CONTAINER_APP, CONNECTION_APP);
 
         String sql = new String(
 				"select " + primaryKeyColumn + ",\n"
@@ -108,6 +112,12 @@ public class KeywordSearchPlugin extends AbstractOracleTextSearchPlugin {
         }
 
         return ps;
+    }
+
+
+    @Override
+    protected String[] defineContextKeys() {
+      return new String[] { CTX_CONTAINER_APP };
     }
 
 }

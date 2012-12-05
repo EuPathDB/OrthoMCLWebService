@@ -13,7 +13,6 @@ import java.util.regex.Pattern;
 
 import javax.sql.DataSource;
 
-import org.gusdb.wdk.controller.CConstants;
 import org.gusdb.wdk.model.WdkModel;
 import org.gusdb.wdk.model.dbms.SqlUtils;
 import org.gusdb.wdk.model.jspwrap.WdkModelBean;
@@ -51,7 +50,7 @@ public class MotifPlugin extends AbstractPlugin {
         }
     }
 
-    private static final String CTX_WDK_MODEL = CConstants.WDK_MODEL_KEY;
+    private static final String CTX_WDK_MODEL = "wdkModel";
 
     private static final String PARAM_ORGANISM = "organism";
     private static final String PARAM_EXPRESSION = "motif_expression";
