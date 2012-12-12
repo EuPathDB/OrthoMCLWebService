@@ -56,7 +56,7 @@ public class MotifPlugin extends AbstractPlugin {
     private static final String PARAM_EXPRESSION = "motif_expression";
 
     // column definitions for returnd results
-    private static final String COLUMN_SOURCE_ID = "source_id";
+    private static final String COLUMN_SOURCE_ID = "full_id";
     private static final String COLUMN_LOCATIONS = "Locations";
     private static final String COLUMN_MATCH_COUNT = "MatchCount";
     private static final String COLUMN_SEQUENCE = "Sequence";
