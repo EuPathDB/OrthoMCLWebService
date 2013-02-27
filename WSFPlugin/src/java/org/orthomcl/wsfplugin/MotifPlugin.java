@@ -180,7 +180,7 @@ public class MotifPlugin extends AbstractPlugin {
         } catch (Exception ex) {
             throw new WsfServiceException(ex);
         } finally {
-            SqlUtils.closeResultSet(resultSet);
+            SqlUtils.closeResultSetAndStatement(resultSet);
         }
     }
 
