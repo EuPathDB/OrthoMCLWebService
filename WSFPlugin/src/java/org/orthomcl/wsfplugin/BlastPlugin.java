@@ -36,6 +36,7 @@ public class BlastPlugin extends AbstractPlugin {
 
     private static final String PARAM_ALGORITHM = "BlastAlgorithm";
     private static final String PARAM_QUERY_SEQUENCE = "BlastQuerySequence";
+    private static final String PARAM_DATABASE = "BlastDatabase";
 
     private static final String COLUMN_ID = "full_id";
     private static final String COLUMN_EVALUE_MANT = "evalue_mant";
@@ -43,7 +44,6 @@ public class BlastPlugin extends AbstractPlugin {
     private static final String COLUMN_SCORE = "score";
 
     private static final String FIELD_APP_PATH = "AppPath";
-    private static final String FIELD_DATABASE_PATH = "DatabasePath";
     private static final String FIELD_TEMP_PATH = "TempPath";
     private static final String FIELD_TIMEOUT = "Timeout";
 
@@ -54,7 +54,6 @@ public class BlastPlugin extends AbstractPlugin {
     private static final DecimalFormat formatter = new DecimalFormat("0.###E0");
  
     private String appPath;
-    private String databasePath;
     private File tempDir;
     private long timeout;
 
@@ -71,7 +70,7 @@ public class BlastPlugin extends AbstractPlugin {
      * @see org.gusdb.wsf.plugin.Plugin#getRequiredParameterNames()
      */
     public String[] getRequiredParameterNames() {
-        return new String[] { PARAM_ALGORITHM, PARAM_QUERY_SEQUENCE };
+        return new String[] { PARAM_ALGORITHM, PARAM_QUERY_SEQUENCE, PARAM_DATABASE };
     }
 
     /*
@@ -90,7 +89,8 @@ public class BlastPlugin extends AbstractPlugin {
      * WsfRequest)
      */
     public void validateParameters(WsfRequest request)
-            throws WsfServiceException {}
+            throws WsfServiceException {
+    }
 
     /*
      * (non-Javadoc)
@@ -113,12 +113,10 @@ public class BlastPlugin extends AbstractPlugin {
         super.initialize(context);
 
         appPath = getProperty(FIELD_APP_PATH);
-        databasePath = getProperty(FIELD_DATABASE_PATH);
         String tempPath = getProperty(FIELD_TEMP_PATH);
-        if (appPath == null || databasePath == null || tempPath == null)
+        if (appPath == null || tempPath == null)
             throw new WsfServiceException("The required fields in property "
-                    + "file are missing: " + FIELD_APP_PATH + ", "
-                    + FIELD_DATABASE_PATH + ", " + FIELD_TEMP_PATH);
+                    + "file are missing: " + FIELD_APP_PATH + ", " + FIELD_TEMP_PATH);
         tempDir = new File(tempPath);
 
         String max = getProperty(FIELD_TIMEOUT);
@@ -191,7 +189,7 @@ public class BlastPlugin extends AbstractPlugin {
         commands.add("-p");
         commands.add(params.get(PARAM_ALGORITHM));
         commands.add("-d");
-        commands.add(databasePath);
+        commands.add(params.get(PARAM_DATABASE));
         commands.add("-i");
         commands.add(seqFile.getAbsolutePath());
         commands.add("-o");
@@ -252,6 +250,7 @@ public class BlastPlugin extends AbstractPlugin {
                 message.append(line).append(newline);
             }
         }
+        reader.close();
 
         String[][] results = new String[sequences.size()][orderedColumns.length];
         int i = 0;
