@@ -3,9 +3,13 @@
 <properties>
 <comment>The configuration file for NCBI-BLAST Processor.</comment>
 
-<entry key="AppPath">(the absolute path to the bin directory of your NCBI-BLAST application)</entry>
-<entry key="DatabasePath">(the absolute path to BLAST database directory)</entry>
-<entry key="TempPath">(the temporary path for BLAST to make input files and save output files)</entry>
-<entry key="Timeout">(time out limit, in seconds)</entry>
+<!-- the absolute path to the bin directory of your NCBI-BLAST application -->
+<entry key="AppPath">/opt/ncbi-blast2/bin</entry>
+
+<!-- the temporary path for BLAST to make input files and save output files -->
+<entry key="TempPath">/var/www/Common/tmp/blast/</entry>
+
+<!-- time out limit, in seconds -->
+<entry key="Timeout">120</entry>
 
 </properties>
