@@ -183,13 +183,17 @@ public class BlastPlugin extends AbstractPlugin {
         out.flush();
         out.close();
 
+        String database = params.get(PARAM_DATABASE);
+        if (database.startsWith("'")) database = database.substring(1);
+        if (database.endsWith("'")) database = database.substring(0, database.length() - 1);
+
         // now prepare the commandline
         List<String> commands = new ArrayList<String>();
         commands.add(appPath + "/blastall");
         commands.add("-p");
         commands.add(params.get(PARAM_ALGORITHM));
         commands.add("-d");
-        commands.add(params.get(PARAM_DATABASE));
+        commands.add(database);
         commands.add("-i");
         commands.add(seqFile.getAbsolutePath());
         commands.add("-o");
@@ -197,7 +201,8 @@ public class BlastPlugin extends AbstractPlugin {
 
         for (String param : params.keySet()) {
             if (param.equals(PARAM_ALGORITHM)
-                    || param.equals(PARAM_QUERY_SEQUENCE)) continue;
+                    || param.equals(PARAM_QUERY_SEQUENCE)
+                    || param.equals(PARAM_DATABASE)) continue;
             commands.add(param);
             commands.add(params.get(param));
         }
