@@ -13,8 +13,8 @@ import java.util.regex.Pattern;
 
 import javax.sql.DataSource;
 
+import org.gusdb.fgputil.db.SqlUtils;
 import org.gusdb.wdk.model.WdkModel;
-import org.gusdb.wdk.model.dbms.SqlUtils;
 import org.gusdb.wdk.model.jspwrap.WdkModelBean;
 import org.gusdb.wsf.plugin.AbstractPlugin;
 import org.gusdb.wsf.plugin.WsfRequest;
@@ -88,6 +88,7 @@ public class MotifPlugin extends AbstractPlugin {
      * 
      * @see org.gusdb.wsf.WsfPlugin#getRequiredParameters()
      */
+    @Override
     public String[] getRequiredParameterNames() {
         return new String[] { PARAM_EXPRESSION, PARAM_ORGANISM };
     }
@@ -107,6 +108,7 @@ public class MotifPlugin extends AbstractPlugin {
      * 
      * @see org.gusdb.wsf.WsfPlugin#getColumns()
      */
+    @Override
     public String[] getColumns() {
         return new String[] { COLUMN_SOURCE_ID, COLUMN_LOCATIONS,
                 COLUMN_MATCH_COUNT, COLUMN_SEQUENCE };
@@ -117,6 +119,7 @@ public class MotifPlugin extends AbstractPlugin {
      * 
      * @see org.gusdb.wsf.plugin.WsfPlugin#validateParameters(java.util.Map)
      */
+    @Override
     public void validateParameters(WsfRequest request)
             throws WsfServiceException {}
 
@@ -139,6 +142,7 @@ public class MotifPlugin extends AbstractPlugin {
      * 
      * @see org.gusdb.wsf.WsfPlugin#execute(java.util.Map, java.lang.String[])
      */
+    @Override
     public WsfResponse execute(WsfRequest request) throws WsfServiceException {
         logger.info("Invoking " + getClass().getSimpleName() + "...");
 
@@ -157,10 +161,10 @@ public class MotifPlugin extends AbstractPlugin {
                 + " FROM dots.ExternalAaSequence eas, apidb.OrthomclTaxon ot "
                 + " WHERE ot.three_letter_abbrev IN (" + organisms + ")"
                 + "   AND ot.taxon_id = eas.taxon_id";
-        DataSource dataSource = wdkModel.getQueryPlatform().getDataSource();
+        DataSource dataSource = wdkModel.getAppDb().getDataSource();
         ResultSet resultSet = null;
         try {
-            resultSet = SqlUtils.executeQuery(wdkModel, dataSource, sql,
+            resultSet = SqlUtils.executeQuery(dataSource, sql,
                     "motif-search", 500);
             while (resultSet.next()) {
                 String sourceId = resultSet.getString("source_id");

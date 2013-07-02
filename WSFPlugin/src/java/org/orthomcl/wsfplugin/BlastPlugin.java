@@ -69,6 +69,7 @@ public class BlastPlugin extends AbstractPlugin {
      * 
      * @see org.gusdb.wsf.plugin.Plugin#getRequiredParameterNames()
      */
+    @Override
     public String[] getRequiredParameterNames() {
         return new String[] { PARAM_ALGORITHM, PARAM_QUERY_SEQUENCE, PARAM_DATABASE };
     }
@@ -78,6 +79,7 @@ public class BlastPlugin extends AbstractPlugin {
      * 
      * @see org.gusdb.wsf.plugin.Plugin#getColumns()
      */
+    @Override
     public String[] getColumns() {
         return new String[] { COLUMN_ID, COLUMN_EVALUE_MANT, COLUMN_EVALUE_EXP, COLUMN_SCORE };
     }
@@ -88,6 +90,7 @@ public class BlastPlugin extends AbstractPlugin {
      * @see org.gusdb.wsf.plugin.Plugin#validateParameters(org.gusdb.wsf.plugin.
      * WsfRequest)
      */
+    @Override
     public void validateParameters(WsfRequest request)
             throws WsfServiceException {
     }
@@ -129,6 +132,7 @@ public class BlastPlugin extends AbstractPlugin {
      * 
      * @see org.gusdb.wsf.plugin.Plugin#execute(org.gusdb.wsf.plugin.WsfRequest)
      */
+    @Override
     public WsfResponse execute(WsfRequest request) throws WsfServiceException {
         logger.info("Invoking " + getClass().getSimpleName() + "...");
 
@@ -173,7 +177,7 @@ public class BlastPlugin extends AbstractPlugin {
     }
 
     private String[] prepareParameters(Map<String, String> params, File outFile)
-            throws IOException, WsfServiceException {
+            throws IOException {
         // get sequence and save it into the sequence file
         String sequence = params.get(PARAM_QUERY_SEQUENCE);
         File seqFile = File.createTempFile(FILE_PREFIX + "_", ".in", tempDir);
