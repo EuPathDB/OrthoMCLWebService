@@ -287,8 +287,6 @@ public class BlastPlugin extends AbstractPlugin {
      * @param defline
      * @param buffer
      * @return
-     * @throws WsfServiceException
-     * @throws UnsupportedEncodingException
      */
     private String processDefline(String defline, StringBuilder buffer)
             throws WsfServiceException, UnsupportedEncodingException {
