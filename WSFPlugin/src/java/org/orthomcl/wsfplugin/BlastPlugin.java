@@ -20,8 +20,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.gusdb.wsf.plugin.AbstractPlugin;
-import org.gusdb.wsf.plugin.WsfRequest;
-import org.gusdb.wsf.plugin.WsfResponse;
+import org.gusdb.wsf.plugin.PluginRequest;
+import org.gusdb.wsf.plugin.PluginResponse;
 import org.gusdb.wsf.plugin.WsfServiceException;
 import org.gusdb.wsf.util.Formatter;
 
@@ -42,6 +42,8 @@ public class BlastPlugin extends AbstractPlugin {
     private static final String COLUMN_EVALUE_MANT = "evalue_mant";
     private static final String COLUMN_EVALUE_EXP = "evalue_exp";
     private static final String COLUMN_SCORE = "score";
+    private static final String COLUMN_SUMMARY = "summary";
+    private static final String COLUMN_ALIGNMENT = "alignment";
 
     private static final String FIELD_APP_PATH = "AppPath";
     private static final String FIELD_TEMP_PATH = "TempPath";
@@ -81,7 +83,7 @@ public class BlastPlugin extends AbstractPlugin {
      */
     @Override
     public String[] getColumns() {
-        return new String[] { COLUMN_ID, COLUMN_EVALUE_MANT, COLUMN_EVALUE_EXP, COLUMN_SCORE };
+        return new String[] { COLUMN_ID, COLUMN_EVALUE_MANT, COLUMN_EVALUE_EXP, COLUMN_SCORE, COLUMN_SUMMARY, COLUMN_ALIGNMENT };
     }
 
     /*
@@ -91,7 +93,7 @@ public class BlastPlugin extends AbstractPlugin {
      * WsfRequest)
      */
     @Override
-    public void validateParameters(WsfRequest request)
+    public void validateParameters(PluginRequest request)
             throws WsfServiceException {
     }
 
@@ -133,7 +135,7 @@ public class BlastPlugin extends AbstractPlugin {
      * @see org.gusdb.wsf.plugin.Plugin#execute(org.gusdb.wsf.plugin.WsfRequest)
      */
     @Override
-    public WsfResponse execute(WsfRequest request) throws WsfServiceException {
+    public void execute(PluginRequest request, PluginResponse response) throws WsfServiceException {
         logger.info("Invoking " + getClass().getSimpleName() + "...");
 
         // create temporary files for input sequence and output report
@@ -156,16 +158,13 @@ public class BlastPlugin extends AbstractPlugin {
             logger.info("\nPreparing the result");
             StringBuilder message = new StringBuilder();
             String[] orderedColumns = request.getOrderedColumns();
-            String[][] result = prepareResult(orderedColumns, outFile, message);
+            prepareResult(response, orderedColumns, outFile);
             logger.info("\nResult prepared");
 
             message.append(newline).append(output);
 
-            WsfResponse wsfResult = new WsfResponse();
-            wsfResult.setMessage(message.toString());
-            wsfResult.setSignal(signal);
-            wsfResult.setResult(result);
-            return wsfResult;
+            response.setSignal(signal);
+            response.flush();
         }
         catch (IOException ex) {
             logger.error(ex);
@@ -213,8 +212,9 @@ public class BlastPlugin extends AbstractPlugin {
         return commands.toArray(new String[0]);
     }
 
-    private String[][] prepareResult(String[] orderedColumns, File outFile,
-            StringBuilder message) throws IOException, WsfServiceException {
+    private void prepareResult(PluginResponse response, String[] orderedColumns, File outFile) throws IOException, WsfServiceException {
+      StringBuilder message = new StringBuilder();
+      
         // create a map of <column/position>
         Map<String, Integer> columnIndexes = new HashMap<String, Integer>(
                 orderedColumns.length);
@@ -240,6 +240,7 @@ public class BlastPlugin extends AbstractPlugin {
                 StringBuilder buffer = new StringBuilder();
                 processDefline(line, buffer);
                 message.append(buffer).append(newline);
+                response.
             } else if (inSummary) { // find a line in the table summary
                 StringBuilder buffer = new StringBuilder();
                 String sourceId = processDefline(line, buffer);
@@ -267,7 +268,6 @@ public class BlastPlugin extends AbstractPlugin {
             System.arraycopy(columns, 0, results[i], 0, columns.length);
             i++;
         }
-        return results;
     }
 
     private String[] parseEValue(String evalue) {

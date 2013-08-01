@@ -15,7 +15,7 @@ import org.eupathdb.websvccommon.wsfplugin.textsearch.SearchResult;
 import org.gusdb.fgputil.db.SqlUtils;
 import org.gusdb.wdk.model.WdkModel;
 import org.gusdb.wdk.model.WdkModelException;
-import org.gusdb.wsf.plugin.WsfRequest;
+import org.gusdb.wsf.plugin.PluginRequest;
 import org.gusdb.wsf.plugin.WsfResponse;
 import org.gusdb.wsf.plugin.WsfServiceException;
 
@@ -35,7 +35,7 @@ public class KeywordSearchPlugin extends AbstractOracleTextSearchPlugin {
    * @see org.gusdb.wsf.WsfPlugin#execute(java.util.Map, java.lang.String[])
    */
   @Override
-  public WsfResponse execute(WsfRequest request) throws WsfServiceException {
+  public WsfResponse execute(PluginRequest request) throws WsfServiceException {
     logger.info("Invoking OrthomclKeywordSearchPlugin...");
 
     // get parameters
