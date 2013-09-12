@@ -30,6 +30,9 @@ import org.gusdb.wsf.util.Formatter;
  * 
  */
 public class BlastPlugin extends AbstractPlugin {
+  
+  public static final String MACRO_SUMMARY = "${summary_section}";
+  public static final String MACRO_ALIGNMENT = "${alignment_section}";
 
     private static final String FILE_PROPERTY = "blast-config.xml";
     private static final String FILE_PREFIX = BlastPlugin.class.getSimpleName();
@@ -37,6 +40,7 @@ public class BlastPlugin extends AbstractPlugin {
     private static final String PARAM_ALGORITHM = "BlastAlgorithm";
     private static final String PARAM_QUERY_SEQUENCE = "BlastQuerySequence";
     private static final String PARAM_DATABASE = "BlastDatabase";
+    private static final String PARAM_RECORD_URL = "RecordUrl";
 
     private static final String COLUMN_ID = "full_id";
     private static final String COLUMN_EVALUE_MANT = "evalue_mant";
@@ -48,7 +52,7 @@ public class BlastPlugin extends AbstractPlugin {
     private static final String FIELD_APP_PATH = "AppPath";
     private static final String FIELD_TEMP_PATH = "TempPath";
     private static final String FIELD_TIMEOUT = "Timeout";
-
+    
     private static final String URL_SEQUENCE = "showRecord.do?name=SequenceRecordClasses.SequenceRecordClass&source_id=";
     private static final String URL_GROUP = "showRecord.do?name=GroupRecordClasses.GroupRecordClass&group_name=";
     private static final String FLAG_NO_GROUP = "no_group";
@@ -240,7 +244,6 @@ public class BlastPlugin extends AbstractPlugin {
                 StringBuilder buffer = new StringBuilder();
                 processDefline(line, buffer);
                 message.append(buffer).append(newline);
-                response.
             } else if (inSummary) { // find a line in the table summary
                 StringBuilder buffer = new StringBuilder();
                 String sourceId = processDefline(line, buffer);
