@@ -16,7 +16,7 @@ import org.gusdb.wdk.model.WdkModel;
 import org.gusdb.wdk.model.WdkModelException;
 import org.gusdb.wsf.plugin.PluginRequest;
 import org.gusdb.wsf.plugin.PluginResponse;
-import org.gusdb.wsf.plugin.WsfServiceException;
+import org.gusdb.wsf.plugin.WsfPluginException;
 
 /**
  * @author Steve and John I
@@ -34,7 +34,7 @@ public class KeywordSearchPlugin extends AbstractOracleTextSearchPlugin {
    * @see org.gusdb.wsf.WsfPlugin#execute(java.util.Map, java.lang.String[])
    */
   @Override
-  public void execute(PluginRequest request, PluginResponse response) throws WsfServiceException {
+  public void execute(PluginRequest request, PluginResponse response) throws WsfPluginException {
     logger.info("Invoking OrthomclKeywordSearchPlugin...");
 
     // get parameters
@@ -69,7 +69,7 @@ public class KeywordSearchPlugin extends AbstractOracleTextSearchPlugin {
           oracleTextExpression, quotedFields.toString());
       textSearch(results, ps, primaryKeyColumn);
     } catch (SQLException | WdkModelException | EuPathServiceException ex) {
-      throw new WsfServiceException(ex);
+      throw new WsfPluginException(ex);
     } finally {
       SqlUtils.closeStatement(ps);
     }
@@ -77,7 +77,7 @@ public class KeywordSearchPlugin extends AbstractOracleTextSearchPlugin {
 
   private PreparedStatement getQuery(String recordType, String detailTable,
       String primaryKeyColumn, String projectId, String oracleTextExpression,
-      String fields) throws WsfServiceException, SQLException,
+      String fields) throws WsfPluginException, SQLException,
       WdkModelException, EuPathServiceException {
     Connection dbConnection = getDbConnection(CTX_CONTAINER_APP, CONNECTION_APP);
 
@@ -106,7 +106,7 @@ public class KeywordSearchPlugin extends AbstractOracleTextSearchPlugin {
       ps.setString(1, oracleTextExpression);
     } catch (SQLException e) {
       logger.info("caught SQLException " + e.getMessage());
-      throw new WsfServiceException(e);
+      throw new WsfPluginException(e);
     }
 
     return ps;

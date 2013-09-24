@@ -17,7 +17,7 @@ import org.gusdb.wdk.model.jspwrap.WdkModelBean;
 import org.gusdb.wsf.plugin.AbstractPlugin;
 import org.gusdb.wsf.plugin.PluginRequest;
 import org.gusdb.wsf.plugin.PluginResponse;
-import org.gusdb.wsf.plugin.WsfServiceException;
+import org.gusdb.wsf.plugin.WsfPluginException;
 
 /**
  * @author Jerric, modified by Cristina 2010 to add DNA motif
@@ -118,7 +118,7 @@ public class MotifPlugin extends AbstractPlugin {
    */
   @Override
   public void validateParameters(PluginRequest request)
-      throws WsfServiceException {}
+      throws WsfPluginException {}
 
   /*
    * (non-Javadoc)
@@ -127,7 +127,7 @@ public class MotifPlugin extends AbstractPlugin {
    */
   @Override
   public void initialize(Map<String, Object> context)
-      throws WsfServiceException {
+      throws WsfPluginException {
     super.initialize(context);
 
     WdkModelBean wdkModelBean = (WdkModelBean) context.get(CTX_WDK_MODEL);
@@ -141,7 +141,7 @@ public class MotifPlugin extends AbstractPlugin {
    */
   @Override
   public void execute(PluginRequest request, PluginResponse response)
-      throws WsfServiceException {
+      throws WsfPluginException {
     logger.info("Invoking " + getClass().getSimpleName() + "...");
 
     Map<String, String> params = request.getParams();
@@ -174,7 +174,7 @@ public class MotifPlugin extends AbstractPlugin {
         findMatches(response, searchPattern, sourceId, sequence, orders);
       }
     } catch (Exception ex) {
-      throw new WsfServiceException(ex);
+      throw new WsfPluginException(ex);
     } finally {
       SqlUtils.closeResultSetAndStatement(resultSet);
     }
@@ -208,7 +208,7 @@ public class MotifPlugin extends AbstractPlugin {
 
   private void findMatches(PluginResponse response, Pattern searchPattern,
       String sourceId, String sequence, Map<String, Integer> orders)
-      throws WsfServiceException {
+      throws WsfPluginException {
     Match match = new Match();
     match.sourceId = sourceId;
     StringBuffer sbLoc = new StringBuffer();
@@ -255,7 +255,7 @@ public class MotifPlugin extends AbstractPlugin {
   }
 
   private void addMatch(PluginResponse response, Match match,
-      Map<String, Integer> orders) throws WsfServiceException {
+      Map<String, Integer> orders) throws WsfPluginException {
     String[] row = new String[orders.size()];
 
     row[orders.get(COLUMN_SOURCE_ID)] = match.sourceId;
