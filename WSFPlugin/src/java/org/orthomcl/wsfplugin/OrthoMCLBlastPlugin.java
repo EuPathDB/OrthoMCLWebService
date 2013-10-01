@@ -1,7 +1,6 @@
 package org.orthomcl.wsfplugin;
 
 import org.eupathdb.websvccommon.wsfplugin.blast.AbstractBlastPlugin;
-import org.eupathdb.websvccommon.wsfplugin.blast.NcbiBlastResultFormatter;
 import org.gusdb.wsf.plugin.WsfPluginException;
 
 public class OrthoMCLBlastPlugin extends AbstractBlastPlugin {
@@ -9,7 +8,7 @@ public class OrthoMCLBlastPlugin extends AbstractBlastPlugin {
   public static final String PARAM_DATABASE = "BlastDatabase";
 
   public OrthoMCLBlastPlugin() throws WsfPluginException {
-    super(new OrthoMCLBlastCommandFormatter(), new NcbiBlastResultFormatter());
+    super(new OrthoMCLBlastCommandFormatter(), new OrthoMCLBlastResultFormatter());
   }
 
   @Override
