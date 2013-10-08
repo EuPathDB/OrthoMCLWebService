@@ -6,18 +6,17 @@ package org.orthomcl.wsfplugin;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.util.HashMap;
 import java.util.Map;
 
 import org.eupathdb.websvccommon.wsfplugin.EuPathServiceException;
 import org.eupathdb.websvccommon.wsfplugin.textsearch.AbstractOracleTextSearchPlugin;
-import org.eupathdb.websvccommon.wsfplugin.textsearch.SearchResult;
+import org.eupathdb.websvccommon.wsfplugin.textsearch.ResponseResultContainer;
 import org.gusdb.fgputil.db.SqlUtils;
 import org.gusdb.wdk.model.WdkModel;
 import org.gusdb.wdk.model.WdkModelException;
-import org.gusdb.wsf.plugin.WsfRequest;
-import org.gusdb.wsf.plugin.WsfResponse;
-import org.gusdb.wsf.plugin.WsfServiceException;
+import org.gusdb.wsf.plugin.PluginRequest;
+import org.gusdb.wsf.plugin.PluginResponse;
+import org.gusdb.wsf.plugin.WsfPluginException;
 
 /**
  * @author Steve and John I
@@ -35,7 +34,7 @@ public class KeywordSearchPlugin extends AbstractOracleTextSearchPlugin {
    * @see org.gusdb.wsf.WsfPlugin#execute(java.util.Map, java.lang.String[])
    */
   @Override
-  public WsfResponse execute(WsfRequest request) throws WsfServiceException {
+  public void execute(PluginRequest request, PluginResponse response) throws WsfPluginException {
     logger.info("Invoking OrthomclKeywordSearchPlugin...");
 
     // get parameters
@@ -64,33 +63,21 @@ public class KeywordSearchPlugin extends AbstractOracleTextSearchPlugin {
 
     String oracleTextExpression = transformQueryString(textExpression);
     PreparedStatement ps = null;
-    Map<String, SearchResult> matches = new HashMap<String, SearchResult>();
+    ResponseResultContainer results = new ResponseResultContainer(response, request.getOrderedColumns());
     try {
       ps = getQuery(recordType, detailTable, primaryKeyColumn, projectId,
           oracleTextExpression, quotedFields.toString());
-      matches = textSearch(ps, primaryKeyColumn);
+      textSearch(results, ps, primaryKeyColumn);
     } catch (SQLException | WdkModelException | EuPathServiceException ex) {
-      throw new WsfServiceException(ex);
+      throw new WsfPluginException(ex);
     } finally {
       SqlUtils.closeStatement(ps);
     }
-
-    // construct results
-    StringBuilder message = new StringBuilder();
-
-    String[][] result = flattenMatches(getMatchesSortedArray(matches, message),
-        request.getOrderedColumns());
-    WsfResponse wsfResult = new WsfResponse();
-    wsfResult.setResult(result);
-    wsfResult.setSignal(0);
-    if (message.length() > 0)
-      wsfResult.setMessage(message.toString());
-    return wsfResult;
   }
 
   private PreparedStatement getQuery(String recordType, String detailTable,
       String primaryKeyColumn, String projectId, String oracleTextExpression,
-      String fields) throws WsfServiceException, SQLException,
+      String fields) throws WsfPluginException, SQLException,
       WdkModelException, EuPathServiceException {
     Connection dbConnection = getDbConnection(CTX_CONTAINER_APP, CONNECTION_APP);
 
@@ -119,7 +106,7 @@ public class KeywordSearchPlugin extends AbstractOracleTextSearchPlugin {
       ps.setString(1, oracleTextExpression);
     } catch (SQLException e) {
       logger.info("caught SQLException " + e.getMessage());
-      throw new WsfServiceException(e);
+      throw new WsfPluginException(e);
     }
 
     return ps;
