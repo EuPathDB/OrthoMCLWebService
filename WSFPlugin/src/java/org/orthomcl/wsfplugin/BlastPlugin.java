@@ -47,7 +47,7 @@ public class BlastPlugin extends AbstractPlugin {
     private static final String FIELD_TEMP_PATH = "TempPath";
     private static final String FIELD_TIMEOUT = "Timeout";
 
-    private static final String URL_SEQUENCE = "showRecord.do?name=SequenceRecordClasses.SequenceRecordClass&source_id=";
+    private static final String URL_SEQUENCE = "showRecord.do?name=SequenceRecordClasses.SequenceRecordClass&full_id=";
     private static final String URL_GROUP = "showRecord.do?name=GroupRecordClasses.GroupRecordClass&group_name=";
     private static final String FLAG_NO_GROUP = "no_group";
 
