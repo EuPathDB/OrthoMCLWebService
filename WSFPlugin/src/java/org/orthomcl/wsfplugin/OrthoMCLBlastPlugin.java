@@ -7,6 +7,9 @@ public class OrthoMCLBlastPlugin extends AbstractBlastPlugin {
 
   public static final String PARAM_DATABASE = "BlastDatabase";
 
+  /**
+   * @throws WsfPluginException if something goes wrong while constructing plugin 
+   */
   public OrthoMCLBlastPlugin() throws WsfPluginException {
     super(new OrthoMCLBlastCommandFormatter(), new OrthoMCLBlastResultFormatter());
   }
