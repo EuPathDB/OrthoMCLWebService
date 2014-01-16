@@ -4,6 +4,8 @@
   <!-- oooooooooooooooooooooooooo  Dependencies  oooooooooooooooooooooooooo -->
   <!-- oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo -->
 
+  <import file="${projectsDir}/EuPathWebSvcCommon/build.xml" />
+
   <target name="EuPathWebSvcCommon-Installation">
     <ant antfile="../EuPathWebSvcCommon/build.xml" target="EuPathWebSvcCommon-Installation">
       <property name="project" value="EuPathWebSvcCommon"/>
