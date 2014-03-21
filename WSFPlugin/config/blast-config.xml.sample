@@ -10,6 +10,6 @@
 <entry key="TempPath">/var/www/Common/tmp/blast/</entry>
 
 <!-- time out limit, in seconds -->
-<entry key="Timeout">120</entry>
+<entry key="Timeout">300</entry>
 
 </properties>
