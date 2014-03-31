@@ -63,11 +63,15 @@ public class KeywordSearchPlugin extends AbstractOracleTextSearchPlugin {
 
     String oracleTextExpression = transformQueryString(textExpression);
     PreparedStatement ps = null;
+    String sql;
     ResponseResultContainer results = new ResponseResultContainer(response, request.getOrderedColumns());
     try {
-      ps = getQuery(recordType, detailTable, primaryKeyColumn, projectId,
-          oracleTextExpression, quotedFields.toString());
-      textSearch(results, ps, primaryKeyColumn);
+      sql = getQuery(detailTable, primaryKeyColumn, projectId, quotedFields.toString());
+      Connection dbConnection = getDbConnection(CTX_CONTAINER_APP, CONNECTION_APP);
+      ps = dbConnection.prepareStatement(sql);
+      logger.debug("oracleTextExpression = \"" + oracleTextExpression + "\"");
+      ps.setString(1, oracleTextExpression);
+      textSearch(results, ps, primaryKeyColumn, sql, "OrthoMclTextSearch");
     } catch (SQLException | WdkModelException | EuPathServiceException ex) {
       throw new WsfPluginException(ex);
     } finally {
@@ -75,11 +79,8 @@ public class KeywordSearchPlugin extends AbstractOracleTextSearchPlugin {
     }
   }
 
-  private PreparedStatement getQuery(String recordType, String detailTable,
-      String primaryKeyColumn, String projectId, String oracleTextExpression,
-      String fields) throws WsfPluginException, SQLException,
-      WdkModelException, EuPathServiceException {
-    Connection dbConnection = getDbConnection(CTX_CONTAINER_APP, CONNECTION_APP);
+private String getQuery(String detailTable, String primaryKeyColumn, String projectId, String fields)
+    throws WsfPluginException, SQLException, WdkModelException, EuPathServiceException {
 
     String sql = new String(
         "select "
@@ -96,20 +97,8 @@ public class KeywordSearchPlugin extends AbstractOracleTextSearchPlugin {
             + "        and contains(content, ?, 1) > 0)\n" + "group by  "
             + primaryKeyColumn + "\n" + "order by max(scoring) desc");
     logger.debug("SQL: " + sql);
-    logger.debug("oracleTextExpression = \"" + oracleTextExpression + "\"");
-    logger.debug("fields = \"" + fields + "\"");
-    logger.debug("recordType = \"" + recordType + "\"");
 
-    PreparedStatement ps = null;
-    try {
-      ps = dbConnection.prepareStatement(sql);
-      ps.setString(1, oracleTextExpression);
-    } catch (SQLException e) {
-      logger.info("caught SQLException " + e.getMessage());
-      throw new WsfPluginException(e);
-    }
-
-    return ps;
+    return sql;
   }
 
   @Override
