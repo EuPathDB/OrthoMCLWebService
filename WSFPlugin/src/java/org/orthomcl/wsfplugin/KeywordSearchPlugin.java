@@ -39,8 +39,8 @@ public class KeywordSearchPlugin extends AbstractOracleTextSearchPlugin {
 
     // get parameters
     Map<String, String> params = request.getParams();
-    String recordType = params.get(PARAM_WDK_RECORD_TYPE).trim().replaceAll(
-        "'", "");
+    //String recordType = params.get(PARAM_WDK_RECORD_TYPE).trim().replaceAll(
+    //    "'", "");
     String fields = params.get(PARAM_DATASETS).trim().replaceAll("'", "");
     logger.debug("fields = \"" + fields + "\"");
     String textExpression = params.get(PARAM_TEXT_EXPRESSION).trim();
@@ -79,8 +79,7 @@ public class KeywordSearchPlugin extends AbstractOracleTextSearchPlugin {
     }
   }
 
-private String getQuery(String detailTable, String primaryKeyColumn, String projectId, String fields)
-    throws WsfPluginException, SQLException, WdkModelException, EuPathServiceException {
+private String getQuery(String detailTable, String primaryKeyColumn, String projectId, String fields) {
 
     String sql = new String(
         "select "
