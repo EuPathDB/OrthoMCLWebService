@@ -8,6 +8,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
 import org.eupathdb.websvccommon.wsfplugin.EuPathServiceException;
 import org.eupathdb.websvccommon.wsfplugin.textsearch.AbstractOracleTextSearchPlugin;
 import org.eupathdb.websvccommon.wsfplugin.textsearch.ResponseResultContainer;
@@ -23,6 +24,8 @@ import org.gusdb.wsf.plugin.WsfPluginException;
  * @created Nov 2012
  */
 public class KeywordSearchPlugin extends AbstractOracleTextSearchPlugin {
+
+  private static final Logger logger = Logger.getLogger(KeywordSearchPlugin.class);
 
   private static final String CTX_CONTAINER_APP = "wdkModel";
 

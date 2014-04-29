@@ -11,6 +11,7 @@ import java.util.regex.Pattern;
 
 import javax.sql.DataSource;
 
+import org.apache.log4j.Logger;
 import org.gusdb.fgputil.db.SqlUtils;
 import org.gusdb.wdk.model.WdkModel;
 import org.gusdb.wdk.model.jspwrap.WdkModelBean;
@@ -26,6 +27,8 @@ import org.gusdb.wsf.plugin.WsfPluginException;
 
 // geneID could be an ORF or a genomic sequence deending on who uses the plugin
 public class MotifPlugin extends AbstractPlugin {
+
+  private static final Logger logger = Logger.getLogger(MotifPlugin.class);
 
   private static class Match {
 
