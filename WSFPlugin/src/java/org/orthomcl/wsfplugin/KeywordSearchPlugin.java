@@ -18,6 +18,7 @@ import org.gusdb.wdk.model.WdkModelException;
 import org.gusdb.wsf.plugin.PluginRequest;
 import org.gusdb.wsf.plugin.PluginResponse;
 import org.gusdb.wsf.plugin.WsfPluginException;
+import org.orthomcl.model.InstanceManager;
 
 /**
  * @author Steve and John I
@@ -27,17 +28,15 @@ public class KeywordSearchPlugin extends AbstractOracleTextSearchPlugin {
 
   private static final Logger logger = Logger.getLogger(KeywordSearchPlugin.class);
 
-  private static final String CTX_CONTAINER_APP = "wdkModel";
-
-  private static final String CONNECTION_APP = WdkModel.CONNECTION_APP;
-
+  protected WdkModel wdkModel;
+  
   /*
    * (non-Javadoc)
    * 
    * @see org.gusdb.wsf.WsfPlugin#execute(java.util.Map, java.lang.String[])
    */
   @Override
-  public void execute(PluginRequest request, PluginResponse response) throws WsfPluginException {
+  public int execute(PluginRequest request, PluginResponse response) throws WsfPluginException {
     logger.info("Invoking OrthomclKeywordSearchPlugin...");
 
     // get parameters
@@ -69,12 +68,16 @@ public class KeywordSearchPlugin extends AbstractOracleTextSearchPlugin {
     String sql;
     ResponseResultContainer results = new ResponseResultContainer(response, request.getOrderedColumns());
     try {
+      wdkModel = InstanceManager.getWdkModel(projectId);
+      
       sql = getQuery(detailTable, primaryKeyColumn, projectId, quotedFields.toString());
-      Connection dbConnection = getDbConnection(CTX_CONTAINER_APP, CONNECTION_APP);
+      Connection dbConnection = wdkModel.getConnection(WdkModel.CONNECTION_APP);
       ps = dbConnection.prepareStatement(sql);
       logger.debug("oracleTextExpression = \"" + oracleTextExpression + "\"");
       ps.setString(1, oracleTextExpression);
       textSearch(results, ps, primaryKeyColumn, sql, "OrthoMclTextSearch");
+      
+      return 0;
     } catch (SQLException | WdkModelException | EuPathServiceException ex) {
       throw new WsfPluginException(ex);
     } finally {
@@ -101,11 +104,6 @@ private String getQuery(String detailTable, String primaryKeyColumn, String proj
     logger.debug("SQL: " + sql);
 
     return sql;
-  }
-
-  @Override
-  protected String[] defineContextKeys() {
-    return new String[] { CTX_CONTAINER_APP };
   }
 
 }
