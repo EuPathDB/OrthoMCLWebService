@@ -9,6 +9,7 @@ import java.sql.SQLException;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
+import org.eupathdb.common.model.InstanceManager;
 import org.eupathdb.websvccommon.wsfplugin.EuPathServiceException;
 import org.eupathdb.websvccommon.wsfplugin.textsearch.AbstractOracleTextSearchPlugin;
 import org.eupathdb.websvccommon.wsfplugin.textsearch.ResponseResultContainer;
@@ -18,7 +19,6 @@ import org.gusdb.wdk.model.WdkModelException;
 import org.gusdb.wsf.plugin.PluginRequest;
 import org.gusdb.wsf.plugin.PluginResponse;
 import org.gusdb.wsf.plugin.WsfPluginException;
-import org.orthomcl.model.InstanceManager;
 
 /**
  * @author Steve and John I
@@ -68,7 +68,7 @@ public class KeywordSearchPlugin extends AbstractOracleTextSearchPlugin {
     String sql;
     ResponseResultContainer results = new ResponseResultContainer(response, request.getOrderedColumns());
     try {
-      wdkModel = InstanceManager.getWdkModel(projectId);
+      wdkModel = InstanceManager.getInstance(WdkModel.class, projectId);
       
       sql = getQuery(detailTable, primaryKeyColumn, projectId, quotedFields.toString());
       Connection dbConnection = wdkModel.getConnection(WdkModel.CONNECTION_APP);

@@ -12,6 +12,7 @@ import java.util.regex.Pattern;
 import javax.sql.DataSource;
 
 import org.apache.log4j.Logger;
+import org.eupathdb.common.model.InstanceManager;
 import org.gusdb.fgputil.db.SqlUtils;
 import org.gusdb.wdk.model.WdkModel;
 import org.gusdb.wsf.plugin.AbstractPlugin;
@@ -19,7 +20,6 @@ import org.gusdb.wsf.plugin.PluginRequest;
 import org.gusdb.wsf.plugin.PluginResponse;
 import org.gusdb.wsf.plugin.WsfException;
 import org.gusdb.wsf.plugin.WsfPluginException;
-import org.orthomcl.model.InstanceManager;
 
 /**
  * @author Jerric, modified by Cristina 2010 to add DNA motif
@@ -153,7 +153,7 @@ public class MotifPlugin extends AbstractPlugin {
         + "   AND ot.taxon_id = eas.taxon_id";
     ResultSet resultSet = null;
     try {
-      wdkModel = InstanceManager.getWdkModel(request.getProjectId());
+      wdkModel = InstanceManager.getInstance(WdkModel.class, request.getProjectId());
       DataSource dataSource = wdkModel.getAppDb().getDataSource();
       resultSet = SqlUtils.executeQuery(dataSource, sql, "motif-search", 500);
       while (resultSet.next()) {
