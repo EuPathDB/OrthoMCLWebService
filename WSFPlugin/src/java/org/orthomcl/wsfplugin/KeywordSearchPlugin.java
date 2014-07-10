@@ -9,6 +9,7 @@ import java.sql.SQLException;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
+import org.eupathdb.common.model.InstanceManager;
 import org.eupathdb.websvccommon.wsfplugin.EuPathServiceException;
 import org.eupathdb.websvccommon.wsfplugin.textsearch.AbstractOracleTextSearchPlugin;
 import org.eupathdb.websvccommon.wsfplugin.textsearch.ResponseResultContainer;
@@ -27,17 +28,15 @@ public class KeywordSearchPlugin extends AbstractOracleTextSearchPlugin {
 
   private static final Logger logger = Logger.getLogger(KeywordSearchPlugin.class);
 
-  private static final String CTX_CONTAINER_APP = "wdkModel";
-
-  private static final String CONNECTION_APP = WdkModel.CONNECTION_APP;
-
+  protected WdkModel wdkModel;
+  
   /*
    * (non-Javadoc)
    * 
    * @see org.gusdb.wsf.WsfPlugin#execute(java.util.Map, java.lang.String[])
    */
   @Override
-  public void execute(PluginRequest request, PluginResponse response) throws WsfPluginException {
+  public int execute(PluginRequest request, PluginResponse response) throws WsfPluginException {
     logger.info("Invoking OrthomclKeywordSearchPlugin...");
 
     // get parameters
@@ -69,12 +68,16 @@ public class KeywordSearchPlugin extends AbstractOracleTextSearchPlugin {
     String sql;
     ResponseResultContainer results = new ResponseResultContainer(response, request.getOrderedColumns());
     try {
+      wdkModel = InstanceManager.getInstance(WdkModel.class, projectId);
+      
       sql = getQuery(detailTable, primaryKeyColumn, projectId, quotedFields.toString());
-      Connection dbConnection = getDbConnection(CTX_CONTAINER_APP, CONNECTION_APP);
+      Connection dbConnection = wdkModel.getConnection(WdkModel.CONNECTION_APP);
       ps = dbConnection.prepareStatement(sql);
       logger.debug("oracleTextExpression = \"" + oracleTextExpression + "\"");
       ps.setString(1, oracleTextExpression);
       textSearch(results, ps, primaryKeyColumn, sql, "OrthoMclTextSearch");
+      
+      return 0;
     } catch (SQLException | WdkModelException | EuPathServiceException ex) {
       throw new WsfPluginException(ex);
     } finally {
@@ -101,11 +104,6 @@ private String getQuery(String detailTable, String primaryKeyColumn, String proj
     logger.debug("SQL: " + sql);
 
     return sql;
-  }
-
-  @Override
-  protected String[] defineContextKeys() {
-    return new String[] { CTX_CONTAINER_APP };
   }
 
 }
