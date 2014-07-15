@@ -15,10 +15,10 @@ import org.apache.log4j.Logger;
 import org.eupathdb.common.model.InstanceManager;
 import org.gusdb.fgputil.db.SqlUtils;
 import org.gusdb.wdk.model.WdkModel;
+import org.gusdb.wsf.common.PluginRequest;
+import org.gusdb.wsf.common.WsfException;
 import org.gusdb.wsf.plugin.AbstractPlugin;
-import org.gusdb.wsf.plugin.PluginRequest;
 import org.gusdb.wsf.plugin.PluginResponse;
-import org.gusdb.wsf.plugin.WsfException;
 import org.gusdb.wsf.plugin.WsfPluginException;
 
 /**
