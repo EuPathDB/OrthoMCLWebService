@@ -8,7 +8,7 @@
 	<classpathentry kind="var" path="GUS_HOME/lib/java/db_driver/ojdbc6.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/EuPath Common Model"/>
 	<classpathentry kind="var" path="M2_REPO/log4j/log4j/1.2.17/log4j-1.2.17.jar"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/WSF Plugin"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/WDK Model"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/wsf-plugin"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/wdk-model"/>
 	<classpathentry kind="output" path="classes"/>
 </classpath>
