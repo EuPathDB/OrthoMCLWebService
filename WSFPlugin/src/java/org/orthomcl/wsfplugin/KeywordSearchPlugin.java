@@ -16,9 +16,10 @@ import org.eupathdb.websvccommon.wsfplugin.textsearch.ResponseResultContainer;
 import org.gusdb.fgputil.db.SqlUtils;
 import org.gusdb.wdk.model.WdkModel;
 import org.gusdb.wdk.model.WdkModelException;
-import org.gusdb.wsf.common.PluginRequest;
+import org.gusdb.wsf.plugin.PluginModelException;
+import org.gusdb.wsf.plugin.PluginRequest;
 import org.gusdb.wsf.plugin.PluginResponse;
-import org.gusdb.wsf.plugin.WsfPluginException;
+import org.gusdb.wsf.plugin.PluginUserException;
 
 /**
  * @author Steve and John I
@@ -36,7 +37,7 @@ public class KeywordSearchPlugin extends AbstractOracleTextSearchPlugin {
    * @see org.gusdb.wsf.WsfPlugin#execute(java.util.Map, java.lang.String[])
    */
   @Override
-  public int execute(PluginRequest request, PluginResponse response) throws WsfPluginException {
+  public int execute(PluginRequest request, PluginResponse response) throws PluginModelException, PluginUserException  {
     logger.info("Invoking OrthomclKeywordSearchPlugin...");
 
     // get parameters
@@ -79,7 +80,7 @@ public class KeywordSearchPlugin extends AbstractOracleTextSearchPlugin {
       
       return 0;
     } catch (SQLException | WdkModelException | EuPathServiceException ex) {
-      throw new WsfPluginException(ex);
+      throw new PluginModelException(ex);
     } finally {
       SqlUtils.closeStatement(ps);
     }

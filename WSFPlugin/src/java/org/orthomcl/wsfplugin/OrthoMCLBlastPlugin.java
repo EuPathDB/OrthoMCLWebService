@@ -2,7 +2,6 @@ package org.orthomcl.wsfplugin;
 
 import org.eupathdb.websvccommon.wsfplugin.blast.AbstractBlastPlugin;
 import org.gusdb.fgputil.ArrayUtil;
-import org.gusdb.wsf.plugin.WsfPluginException;
 
 public class OrthoMCLBlastPlugin extends AbstractBlastPlugin {
 
@@ -11,7 +10,7 @@ public class OrthoMCLBlastPlugin extends AbstractBlastPlugin {
   /**
    * @throws WsfPluginException if something goes wrong while constructing plugin 
    */
-  public OrthoMCLBlastPlugin() throws WsfPluginException {
+  public OrthoMCLBlastPlugin() {
     super(new OrthoMCLBlastCommandFormatter(), new OrthoMCLBlastResultFormatter());
   }
 
