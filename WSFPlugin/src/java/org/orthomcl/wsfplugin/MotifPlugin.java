@@ -13,10 +13,9 @@ import java.util.regex.Pattern;
 import javax.sql.DataSource;
 
 import org.apache.log4j.Logger;
-import org.eupathdb.common.model.InstanceManager;
 import org.gusdb.fgputil.db.SqlUtils;
+import org.gusdb.fgputil.runtime.InstanceManager;
 import org.gusdb.wdk.model.WdkModel;
-import org.gusdb.wdk.model.WdkModelException;
 import org.gusdb.wsf.plugin.AbstractPlugin;
 import org.gusdb.wsf.plugin.PluginModelException;
 import org.gusdb.wsf.plugin.PluginRequest;
@@ -165,7 +164,7 @@ public class MotifPlugin extends AbstractPlugin {
         findMatches(response, searchPattern, sourceId, sequence, orders);
       }
       return 0;
-    } catch (SQLException | WdkModelException ex) {
+    } catch (SQLException ex) {
       throw new PluginModelException(ex);
     } finally {
       SqlUtils.closeResultSetAndStatement(resultSet);

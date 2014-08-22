@@ -3,19 +3,17 @@
  */
 package org.orthomcl.wsfplugin;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
-import org.eupathdb.common.model.InstanceManager;
 import org.eupathdb.websvccommon.wsfplugin.EuPathServiceException;
 import org.eupathdb.websvccommon.wsfplugin.textsearch.AbstractOracleTextSearchPlugin;
 import org.eupathdb.websvccommon.wsfplugin.textsearch.ResponseResultContainer;
 import org.gusdb.fgputil.db.SqlUtils;
+import org.gusdb.fgputil.runtime.InstanceManager;
 import org.gusdb.wdk.model.WdkModel;
-import org.gusdb.wdk.model.WdkModelException;
 import org.gusdb.wsf.plugin.PluginModelException;
 import org.gusdb.wsf.plugin.PluginRequest;
 import org.gusdb.wsf.plugin.PluginResponse;
@@ -65,23 +63,23 @@ public class KeywordSearchPlugin extends AbstractOracleTextSearchPlugin {
     }
 
     String oracleTextExpression = transformQueryString(textExpression);
-    PreparedStatement ps = null;
-    String sql;
     ResponseResultContainer results = new ResponseResultContainer(response, request.getOrderedColumns());
+    PreparedStatement ps = null;
     try {
       wdkModel = InstanceManager.getInstance(WdkModel.class, projectId);
       
-      sql = getQuery(detailTable, primaryKeyColumn, projectId, quotedFields.toString());
-      Connection dbConnection = wdkModel.getConnection(WdkModel.CONNECTION_APP);
-      ps = dbConnection.prepareStatement(sql);
+      String sql = getQuery(detailTable, primaryKeyColumn, projectId, quotedFields.toString());
+      ps = SqlUtils.getPreparedStatement(wdkModel.getAppDb().getDataSource(), sql);
       logger.debug("oracleTextExpression = \"" + oracleTextExpression + "\"");
       ps.setString(1, oracleTextExpression);
       textSearch(results, ps, primaryKeyColumn, sql, "OrthoMclTextSearch");
       
       return 0;
-    } catch (SQLException | WdkModelException | EuPathServiceException ex) {
+    }
+    catch (SQLException | EuPathServiceException ex) {
       throw new PluginModelException(ex);
-    } finally {
+    }
+    finally {
       SqlUtils.closeStatement(ps);
     }
   }
