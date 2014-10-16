@@ -59,8 +59,7 @@
   <!-- oooooooooooooooooooooooo  Web Installation  oooooooooooooooooooooooo -->
   <!-- oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo -->
 
-  <target name="OrthoMCLWebService-WebInstallation" depends="EuPathWebSvcCommon-WebInstallation,
-                                                             OrthoMCLWebService-Installation">
+  <target name="OrthoMCLWebService-WebInstallation" depends="OrthoMCLWebService-Installation">
 
   </target>
 
