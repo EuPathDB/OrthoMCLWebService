@@ -3,7 +3,6 @@
  */
 package org.orthomcl.wsfplugin;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Map;
@@ -13,11 +12,12 @@ import org.eupathdb.websvccommon.wsfplugin.EuPathServiceException;
 import org.eupathdb.websvccommon.wsfplugin.textsearch.AbstractOracleTextSearchPlugin;
 import org.eupathdb.websvccommon.wsfplugin.textsearch.ResponseResultContainer;
 import org.gusdb.fgputil.db.SqlUtils;
+import org.gusdb.fgputil.runtime.InstanceManager;
 import org.gusdb.wdk.model.WdkModel;
-import org.gusdb.wdk.model.WdkModelException;
+import org.gusdb.wsf.plugin.PluginModelException;
 import org.gusdb.wsf.plugin.PluginRequest;
 import org.gusdb.wsf.plugin.PluginResponse;
-import org.gusdb.wsf.plugin.WsfPluginException;
+import org.gusdb.wsf.plugin.PluginUserException;
 
 /**
  * @author Steve and John I
@@ -27,17 +27,15 @@ public class KeywordSearchPlugin extends AbstractOracleTextSearchPlugin {
 
   private static final Logger logger = Logger.getLogger(KeywordSearchPlugin.class);
 
-  private static final String CTX_CONTAINER_APP = "wdkModel";
-
-  private static final String CONNECTION_APP = WdkModel.CONNECTION_APP;
-
+  protected WdkModel wdkModel;
+  
   /*
    * (non-Javadoc)
    * 
    * @see org.gusdb.wsf.WsfPlugin#execute(java.util.Map, java.lang.String[])
    */
   @Override
-  public void execute(PluginRequest request, PluginResponse response) throws WsfPluginException {
+  public int execute(PluginRequest request, PluginResponse response) throws PluginModelException, PluginUserException  {
     logger.info("Invoking OrthomclKeywordSearchPlugin...");
 
     // get parameters
@@ -65,19 +63,23 @@ public class KeywordSearchPlugin extends AbstractOracleTextSearchPlugin {
     }
 
     String oracleTextExpression = transformQueryString(textExpression);
-    PreparedStatement ps = null;
-    String sql;
     ResponseResultContainer results = new ResponseResultContainer(response, request.getOrderedColumns());
+    PreparedStatement ps = null;
     try {
-      sql = getQuery(detailTable, primaryKeyColumn, projectId, quotedFields.toString());
-      Connection dbConnection = getDbConnection(CTX_CONTAINER_APP, CONNECTION_APP);
-      ps = dbConnection.prepareStatement(sql);
+      wdkModel = InstanceManager.getInstance(WdkModel.class, projectId);
+      
+      String sql = getQuery(detailTable, primaryKeyColumn, projectId, quotedFields.toString());
+      ps = SqlUtils.getPreparedStatement(wdkModel.getAppDb().getDataSource(), sql);
       logger.debug("oracleTextExpression = \"" + oracleTextExpression + "\"");
       ps.setString(1, oracleTextExpression);
       textSearch(results, ps, primaryKeyColumn, sql, "OrthoMclTextSearch");
-    } catch (SQLException | WdkModelException | EuPathServiceException ex) {
-      throw new WsfPluginException(ex);
-    } finally {
+      
+      return 0;
+    }
+    catch (SQLException | EuPathServiceException ex) {
+      throw new PluginModelException(ex);
+    }
+    finally {
       SqlUtils.closeStatement(ps);
     }
   }
@@ -101,11 +103,6 @@ private String getQuery(String detailTable, String primaryKeyColumn, String proj
     logger.debug("SQL: " + sql);
 
     return sql;
-  }
-
-  @Override
-  protected String[] defineContextKeys() {
-    return new String[] { CTX_CONTAINER_APP };
   }
 
 }

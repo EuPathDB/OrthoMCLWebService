@@ -4,14 +4,10 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/3.8.1"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/EuPath Common WS"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/WSF Plugin"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/WDK Model"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/fgputil-util"/>
-	<classpathentry kind="lib" path="/WSF Service/lib/java/jaxrpc-1.4.jar"/>
-	<classpathentry kind="lib" path="/WSF Service/lib/java/axis-1.4.jar"/>
-	<classpathentry kind="var" path="GUS_HOME/lib/java/db_driver/ojdbc6.jar"/>
-	<classpathentry kind="var" path="GUS_HOME/lib/java/WSF-Client.jar"/>
-	<classpathentry kind="lib" path="/WSF Plugin/lib/java/log4j-1.2.17.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/EuPath Common Model"/>
+	<classpathentry kind="var" path="M2_REPO/log4j/log4j/1.2.17/log4j-1.2.17.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/wsf-plugin"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/wdk-model"/>
 	<classpathentry kind="output" path="classes"/>
 </classpath>
