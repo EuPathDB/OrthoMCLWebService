@@ -17,7 +17,7 @@ public class OrthoMCLBlastResultFormatter extends NcbiBlastResultFormatter {
 
   @Override
   protected String getIdUrl(String recordClass, String projectId,
-      String sourceId) throws EuPathServiceException {
+      String sourceId, String defline) throws EuPathServiceException {
     try {
     String url = "showRecord.do?name=" + recordClass + "&project_id="
         + URLEncoder.encode(projectId, "UTF-8") + "&full_id="
