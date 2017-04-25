@@ -4,12 +4,12 @@
   <!-- oooooooooooooooooooooooooo  Dependencies  oooooooooooooooooooooooooo -->
   <!-- oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo -->
 
-  <import file="${projectsDir}/EuPathWebSvcCommon/build.xml" />
+  <import file="${projectsDir}/EbrcWebSvcCommon/build.xml" />
 
-  <target name="EuPathWebSvcCommon-Checkout" unless="EuPathWebSvcCommon.present">
+  <target name="EbrcWebSvcCommon-Checkout" unless="EbrcWebSvcCommon.present">
     <ant target="defaultProjectCheckout" inheritAll="false">
-      <property name="svnurl" value="https://www.cbil.upenn.edu/svn/apidb/EuPathWebSvcCommon"/>
-      <property name="project" value="EuPathWebSvcCommon"/>
+      <property name="svnurl" value="https://www.cbil.upenn.edu/svn/apidb/EbrcWebSvcCommon"/>
+      <property name="project" value="EbrcWebSvcCommon"/>
       <property name="version" value="api-build-17"/>
     </ant>
   </target>
@@ -18,8 +18,8 @@
   <!-- oooooooooooooooooooooooooo    Checkout    oooooooooooooooooooooooooo -->
   <!-- oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo -->
   <target name="OrthoMCLWebService-ChildCheckout">
-    <available file="../EuPathWebSvcCommon" type="dir"  property="EuPathWebSvcCommon.present" />
-    <antcall target="EuPathWebSvcCommon-Checkout"/>
+    <available file="../EbrcWebSvcCommon" type="dir"  property="EbrcWebSvcCommon.present" />
+    <antcall target="EbrcWebSvcCommon-Checkout"/>
 
   </target>
   
@@ -28,7 +28,7 @@
   <!-- oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo -->
   <target name="OrthoMCLWebService-ChildUpdate">
     <ant target="defaultProjectUpdate">
-      <property name="project" value="EuPathWebSvcCommon"/>
+      <property name="project" value="EbrcWebSvcCommon"/>
     </ant>
   </target>
 
@@ -36,7 +36,7 @@
   <!-- oooooooooooooooooooooooooo  Installation  oooooooooooooooooooooooooo -->
   <!-- oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo -->
 
-  <target name="OrthoMCLWebService-Installation" depends="EuPathWebSvcCommon-Installation,
+  <target name="OrthoMCLWebService-Installation" depends="EbrcWebSvcCommon-Installation,
                                                           OrthoMCLWebService/WSFPlugin-Installation">
 
     <ant target="defaultProjectInstall"/>
