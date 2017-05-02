@@ -8,7 +8,7 @@
 
   <target name="EbrcWebSvcCommon-Checkout" unless="EbrcWebSvcCommon.present">
     <ant target="defaultProjectCheckout" inheritAll="false">
-      <property name="svnurl" value="https://www.cbil.upenn.edu/svn/apidb/EbrcWebSvcCommon"/>
+      <property name="svnurl" value="https://cbilsvn.pmacs.upenn.edu/svn/apidb/EbrcWebSvcCommon"/>
       <property name="project" value="EbrcWebSvcCommon"/>
       <property name="version" value="api-build-17"/>
     </ant>
