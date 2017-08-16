@@ -37,11 +37,19 @@
   <!-- oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo -->
 
   <target name="OrthoMCLWebService-Installation" depends="EbrcWebSvcCommon-Installation,
+  	                                                      OrthoMCLWebService-MavenInstallation,
                                                           OrthoMCLWebService/WSFPlugin-Installation">
 
     <ant target="defaultProjectInstall"/>
 
   </target>
+	
+	<target name="OrthoMCLWebService-MavenInstallation">
+	  <ant target="mavenBuildProject">
+	    <property name="project" value="OrthoMCLWebService"/>
+	  </ant>
+	  <property name="alreadyBuilt" value="true"/>
+	</target>
 
 
  <!-- ooooooooooooooooooooooo  Install Components  ooooooooooooooooooooooo -->
