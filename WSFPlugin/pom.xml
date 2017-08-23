@@ -9,7 +9,7 @@
   </parent>
 
   <name>OrthoMCL Webservice: WSFPlugin</name>
-  <artifactId>orthomcl-websvc-model</artifactId>
+  <artifactId>orthomcl-websvc-wsfplugin</artifactId>
   <packaging>jar</packaging>
 
   <dependencies>
