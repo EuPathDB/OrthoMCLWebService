@@ -6,68 +6,43 @@
 
   <import file="${projectsDir}/EbrcWebSvcCommon/build.xml" />
 
-  <target name="EbrcWebSvcCommon-Checkout" unless="EbrcWebSvcCommon.present">
-    <ant target="defaultProjectCheckout" inheritAll="false">
-      <property name="svnurl" value="https://cbilsvn.pmacs.upenn.edu/svn/apidb/EbrcWebSvcCommon"/>
-      <property name="project" value="EbrcWebSvcCommon"/>
-      <property name="version" value="api-build-17"/>
-    </ant>
-  </target>
-
-  <!-- oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo -->
-  <!-- oooooooooooooooooooooooooo    Checkout    oooooooooooooooooooooooooo -->
-  <!-- oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo -->
-  <target name="OrthoMCLWebService-ChildCheckout">
-    <available file="../EbrcWebSvcCommon" type="dir"  property="EbrcWebSvcCommon.present" />
-    <antcall target="EbrcWebSvcCommon-Checkout"/>
-
-  </target>
-  
-  <!-- oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo -->
-  <!-- oooooooooooooooooooooooooo    Update    oooooooooooooooooooooooooo -->
-  <!-- oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo -->
-  <target name="OrthoMCLWebService-ChildUpdate">
-    <ant target="defaultProjectUpdate">
-      <property name="project" value="EbrcWebSvcCommon"/>
-    </ant>
-  </target>
-
   <!-- oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo -->
   <!-- oooooooooooooooooooooooooo  Installation  oooooooooooooooooooooooooo -->
   <!-- oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo -->
 
   <target name="OrthoMCLWebService-Installation" depends="EbrcWebSvcCommon-Installation,
-  	                                                      OrthoMCLWebService-MavenInstallation,
+                                                          OrthoMCLWebService-MavenInstallation,
                                                           OrthoMCLWebService/WSFPlugin-Installation">
 
-    <ant target="defaultProjectInstall"/>
+    <ant target="defaultProjectInstall" />
 
   </target>
-	
-	<target name="OrthoMCLWebService-MavenInstallation">
-	  <ant target="mavenBuildProject">
-	    <property name="project" value="OrthoMCLWebService"/>
-	  </ant>
-	  <property name="alreadyBuilt" value="true"/>
-	</target>
+
+  <target name="OrthoMCLWebService-MavenInstallation">
+    <ant target="mavenBuildProject">
+      <property name="project" value="OrthoMCLWebService" />
+    </ant>
+    <property name="alreadyBuilt" value="true" />
+  </target>
 
 
- <!-- ooooooooooooooooooooooo  Install Components  ooooooooooooooooooooooo -->
+  <!-- ooooooooooooooooooooooo  Install Components  ooooooooooooooooooooooo -->
 
   <target name="OrthoMCLWebService/WSFPlugin-Installation">
 
     <ant target="defaultComponentInstall">
-      <property name="project" value="OrthoMCLWebService"/>
-      <property name="component" value="WSFPlugin"/>
+      <property name="project" value="OrthoMCLWebService" />
+      <property name="component" value="WSFPlugin" />
     </ant>
-    
- </target>
+
+  </target>
 
   <!-- oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo -->
   <!-- oooooooooooooooooooooooo  Web Installation  oooooooooooooooooooooooo -->
   <!-- oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo -->
 
-  <target name="OrthoMCLWebService-WebInstallation" depends="OrthoMCLWebService-Installation">
+  <target name="OrthoMCLWebService-WebInstallation"
+          depends="OrthoMCLWebService-Installation">
 
   </target>
 
@@ -76,11 +51,11 @@
   <!-- oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo -->
 
   <target name="OrthoMCLWebService-Release">
-    
+
     <ant target="defaultProjectRelease">
-      <property name="cvsroot" value=":ext:cvs.sanger.ac.uk:/cvsroot/GUS"/>
+      <property name="cvsroot" value=":ext:cvs.sanger.ac.uk:/cvsroot/GUS" />
     </ant>
-  </target>  
+  </target>
 
   <!-- oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo -->
   <!-- oooooooooooooooooooooooooo  Distributable  ooooooooooooooooooooooooo -->
@@ -89,11 +64,11 @@
   <target name="OrthoMCLWebService-Distributable">
 
     <copy todir="${targetDir}">
-      <fileset dir="${projectsDir}" >
+      <fileset dir="${projectsDir}">
         <exclude name="**/CVS/*" />
       </fileset>
-    </copy>  
-  </target>  
+    </copy>
+  </target>
 
 </project>
 
