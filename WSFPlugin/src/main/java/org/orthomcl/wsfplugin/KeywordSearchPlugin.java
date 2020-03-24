@@ -97,7 +97,7 @@ private String getQuery(String detailTable, String primaryKeyColumn, String proj
             + "        as fields_matched\n" + "from (select  "
             + primaryKeyColumn + ", field_name, score(1) as scoring\n"
             + "      from " + detailTable + "\n"
-            + "      where field_name in (" + fields + ")\n"
+	+ "      where field_name in (" + fields.replaceAll("_","\\_") + ")\n"
             + "        and contains(content, ?, 1) > 0)\n" + "group by  "
             + primaryKeyColumn + "\n" + "order by max(scoring) desc");
     logger.debug("SQL: " + sql);
