@@ -13,27 +13,27 @@
   <packaging>jar</packaging>
 
   <dependencies>
-  
+
     <dependency>
       <groupId>org.eupathdb</groupId>
       <artifactId>ebrc-websvc-common-wsfplugin</artifactId>
     </dependency>
-    
+
     <dependency>
       <groupId>org.eupathdb</groupId>
       <artifactId>ebrc-website-common-model</artifactId>
     </dependency>
-    
+
     <dependency>
       <groupId>org.gusdb</groupId>
       <artifactId>wdk-model</artifactId>
     </dependency>
-    
+
     <dependency>
       <groupId>org.gusdb</groupId>
       <artifactId>fgputil-util</artifactId>
     </dependency>
-    
+
     <dependency>
       <groupId>org.gusdb</groupId>
       <artifactId>wsf-plugin</artifactId>
@@ -45,10 +45,10 @@
     </dependency>
 
     <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter</artifactId>
     </dependency>
-    
+
   </dependencies>
 
 </project>
