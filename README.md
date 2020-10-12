@@ -1,4 +1,4 @@
-# ApiCommonWebService
+# OrthoMCLWebService
 [WSF](https://github.com/VEuPathDB/WSF) Plugins used by the OrthoMCL website.  See [WSFPlugin/src](WSFPlugin/src/main/java/org/orthomcl/wsfplugin) for the list of plugins.
 
 ## Dependencies
