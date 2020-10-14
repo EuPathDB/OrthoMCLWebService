@@ -1,7 +1,7 @@
 # OrthoMCLWebService
 [WSF](https://github.com/VEuPathDB/WSF) Plugins used by the OrthoMCL website.  See [WSFPlugin/src](WSFPlugin/src/main/java/org/orthomcl/wsfplugin) for the list of plugins.
 
-The content in this repo will be moved to [[https://github.com/VEuPathDB/OrthoMCLModel][OrthoMCLModel]] and this repo will be archived after VEuPathDB release 50 planned for January 2021.
+The content in this repo will be moved to [[https://github.com/VEuPathDB/OrthoMCLModel][OrthoMCLModel]]. This repo will be archived after VEuPathDB release 50 planned for January 2021.
 
 ## Dependencies
 
